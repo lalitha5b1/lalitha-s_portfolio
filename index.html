@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solo Leveling Portfolio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Orbitron:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+
+    :root {
+      --bg-color: #0a0a12;
+      --surface-color: #12121f;
+      --text-color: #c8c8e0;
+      --primary-color: #0004ed;
+      --accent-color: #00e5ff;
+    }
+
+    /* =========================================
+       OPENING PAGE (SPLASH SCREEN) STYLES
+    ============================================ */
+    #system-opening {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #050505;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .opening-content {
+      text-align: center;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .system-label {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent-color);
+      letter-spacing: 0.5em;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px var(--accent-color);
+      animation: systemFlicker 3s infinite;
+    }
+
+    .welcome-main {
+      font-family: sans-serif;
+      color: rgb(93, 74, 237);
+      font-size: xx-large;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 3rem;
+      letter-spacing: 0.1em;
+      opacity: 500;
+      transform: translateY(50px);
+      animation: slideUpFade 0.8s ease-out 0.5s forwards;
+
+    }
+ 
+   .enter-system-btn {
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s;
+      opacity: 0;
+      animation: slideUpFade 0.8s ease-out 1.2s forwards;
+      clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    }
+
+    .enter-system-btn:hover {
+      background: var(--accent-color);
+      color: rgb(0, 0, 0);
+      box-shadow: 0 0 30px var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    .scanline-opening {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+    }
+
+    @keyframes systemFlicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 15px var(--accent-color); }
+      20%, 24%, 55% { opacity: 0.3; text-shadow: none; }
+    }
+
+    @keyframes slideUpFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Exit Animation */
+    .system-off {
+      opacity: 0;
+      transform: scale(1.1);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+
+    /* Animated background */
+    .sl-bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      background: var(--bg-color);
+    }
+
+    /* Particle field */
+    .particle-field {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particleFloat linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-800px) scale(0); opacity: 0; }
+    }
+
+    /* Dark energy waves */
+    .energy-wave {
+      position: fixed;
+      border-radius: 50%;
+      border: 1px solid;
+      pointer-events: none;
+      z-index: 1;
+      animation: waveExpand 4s ease-out infinite;
+    }
+
+    @keyframes waveExpand {
+      0% { transform: scale(0); opacity: 0.6; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+
+    /* Shadow tendrils */
+    .shadow-tendril {
+      position: fixed;
+      width: 2px;
+      bottom: 0;
+      z-index: 1;
+      pointer-events: none;
+      animation: tendrilRise 6s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes tendrilRise {
+      0%, 100% { height: 0; opacity: 0; }
+      30% { opacity: 0.7; }
+      50% { height: 60%; opacity: 0.4; }
+      70% { opacity: 0.2; }
+      100% { height: 0; opacity: 0; }
+    }
+
+    /* Glitch effect for title */
+    .glitch-text {
+      position: relative;
+    }
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-text::before {
+      animation: glitch1 3s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      color: var(--primary-color);
+    }
+    .glitch-text::after {
+      animation: glitch2 3s infinite;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+      color: var(--accent-color);
+    }
+
+    @keyframes glitch1 {
+      0%, 94%, 100% { transform: translate(0); }
+      95% { transform: translate(-3px, -1px); }
+      96% { transform: translate(3px, 1px); }
+      97% { transform: translate(-2px, 2px); }
+    }
+    @keyframes glitch2 {
+      0%, 94%, 100% { transform: translate(0); }
+      95% { transform: translate(3px, 1px); }
+      96% { transform: translate(-3px, -1px); }
+      97% { transform: translate(2px, -2px); }
+    }
+
+    /* Neon glow */
+    .neon-glow {
+      text-shadow: 0 0 7px var(--primary-color), 0 0 20px var(--primary-color), 0 0 42px var(--primary-color);
+    }
+
+    .accent-glow {
+      text-shadow: 0 0 7px var(--accent-color), 0 0 20px var(--accent-color);
+    }
+
+    /* Scroll container */
+    .scroll-container {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      overflow-y: hidden; /* Locked until Arise */
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .scroll-container::-webkit-scrollbar {
+      width: 4px;
+    }
+    .scroll-container::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    /* Card hover effect */
+    .sl-card {
+      background: var(--surface-color);
+      border: 1px solid rgba(123, 63, 228, 0.15);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    .sl-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-color), var(--accent-color), transparent);
+      transition: left 0.6s ease;
+    }
+    .sl-card:hover::before { left: 100%; }
+    .sl-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(123, 63, 228, 0.25), inset 0 0 32px rgba(123, 63, 228, 0.05);
+    }
+
+    /* Stat bar animation */
+    .stat-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(123, 63, 228, 0.15);
+      overflow: hidden;
+      position: relative;
+    }
+    .stat-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+    }
+    .stat-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0;
+      width: 20px; height: 100%;
+      background: rgba(255,255,255,0.3);
+      animation: statShimmer 2s infinite;
+    }
+    @keyframes statShimmer {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* Rank badge */
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 14px;
+      position: relative;
+    }
+    .rank-s {
+      background: linear-gradient(135deg, #7b3fe4, #b444ff);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(123,63,228,0.5);
+    }
+    .rank-a {
+      background: linear-gradient(135deg, #002ae4, #1c00f4);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(87, 127, 235, 0.4);
+    }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      color: var(--text-color);
+      transition: color 0.3s;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Section reveal */
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: sectionIn 0.8s ease forwards;
+    }
+    @keyframes sectionIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hunter ID card styling */
+    .hunter-id {
+      background: linear-gradient(135deg, var(--surface-color) 0%, rgba(123,63,228,0.08) 100%);
+      border: 1px solid rgba(123,63,228,0.3);
+      position: relative;
+    }
+    .hunter-id::before {
+      content: 'HUNTER ASSOCIATION';
+      position: absolute;
+      top: 12px; right: 16px;
+      font-family: 'Orbitron', monospace;
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: rgba(123,63,228,0.4);
+    }
+
+    /* Floating rune symbols */
+    .rune {
+      position: fixed;
+      font-size: 24px;
+      color: rgba(123,63,228,0.08);
+      pointer-events: none;
+      z-index: 1;
+      animation: runeFloat 8s ease-in-out infinite;
+    }
+    @keyframes runeFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.08; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.15; }
+    }
+
+    /* Project timeline connector */
+    .timeline-connector {
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary-color), transparent);
+      position: absolute;
+      left: 20px;
+      top: 48px;
+      bottom: -24px;
+    }
+
+    /* Button styles */
+    .sl-btn {
+      background: linear-gradient(135deg, var(--primary-color), #5a2db8);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-family: 'Rajdhani', fantasy;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .sl-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s;
+    }
+    .sl-btn:hover::before { left: 100%; }
+    .sl-btn:hover {
+      box-shadow: 0 4px 24px rgba(123,63,228,0.5);
+      transform: translateY(-2px);
+    }
+
+    .sl-btn-outline {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .sl-btn-outline:hover {
+      background: rgba(0,229,255,0.1);
+      box-shadow: 0 4px 24px rgba(0,229,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(10,10,18,0.98);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu .nav-link { font-size: 20px; }
+
+    /* Stagger animations */
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    .stagger-5 { animation-delay: 0.5s; }
+    .stagger-6 { animation-delay: 0.6s; }
+
+    @media (max-width: 768px) {
+      .desktop-nav { display: none !important; }
+      .mobile-toggle { display: block !important; }
+    }
+    @media (min-width: 769px) {
+      .mobile-toggle { display: none !important; }
+    }
+  </style>
+ </head>
+ <body class="h-full" style="background: var(--bg-color); color: var(--text-color);">
+  
+  <div id="system-opening">
+    <div class="scanline-opening"></div>
+    <div class="opening-content">
+      <h2 class="system-label">[ SYSTEM NOTIFICATION ]</h2>
+      <h1 class="welcome-main">
+        HI EVERYONE<br>
+        <span style="color: rgba(255,255,255,0.6)">WELCOME TO MY PORTFOLIO</span>
+      </h1>
+      <button class="enter-system-btn" onclick="arise()">ARISE / ENTER</button>
+    </div>
+    <div class="absolute w-[600px] h-[600px] bg-[#00e5ff08] rounded-full blur-[120px]"></div>
+  </div>
+
+  <canvas class="sl-bg-canvas" id="bgCanvas"></canvas>
+  <div class="particle-field" id="particleField"></div>
+  <div id="runeField"></div>
+  <div id="energyWaves"></div>
+  <div id="shadowTendrils"></div>
+
+  <div class="mobile-menu" id="mobileMenu">
+   <button onclick="toggleMobile()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:var(--text-color);cursor:pointer;"> <i data-lucide="x" style="width:28px;height:28px;"></i> </button> <a href="#home" class="nav-link" onclick="toggleMobile()">Arise</a> <a href="#about" class="nav-link" onclick="toggleMobile()">Profile</a> <a href="#skills" class="nav-link" onclick="toggleMobile()">Stats</a> <a href="#projects" class="nav-link" onclick="toggleMobile()">Quests</a> <a href="#contact" class="nav-link" onclick="toggleMobile()">Summon</a>
+  </div>
+
+  <div class="scroll-container" id="scrollContainer">
+   <header style="position:sticky;top:0;z-index:50;background:rgba(10,10,18,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,63,228,0.1);">
+    <nav style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+     <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;">
+       <span style="font-family:'Orbitron',monospace;font-weight:900;font-size:16px;color:#fff;">S</span>
+      </div><span style="font-family:'Cinzel',serif;font-weight:700;font-size:18px;color:#e3e3e3;letter-spacing:2px;" id="navName">HUNTER</span>
+     </div>
+     <div class="desktop-nav" style="display:flex;gap:32px;align-items:center;">
+      <a href="#home" class="nav-link">Arise</a> <a href="#about" class="nav-link">Profile</a> <a href="#skills" class="nav-link">Status</a> <a href="#projects" class="nav-link">Quests</a> <a href="#contact" class="nav-link">Summon</a>
+     </div><button class="mobile-toggle" onclick="toggleMobile()" style="background:none;border:none;color:var(--text-color);cursor:pointer;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </nav>
+   </header>
+
+   <section id="home" style="min-height:90%;display:flex;align-items:center;justify-content:center;padding:40px 24px;position:relative;">
+    <div style="text-align:center;max-width:800px;">
+     <div class="section-reveal" style="margin-bottom:24px;">
+      <div class="rank-badge rank-s" style="margin:0 auto;">
+       S
+      </div>
+     </div><p class="section-reveal stagger-1" style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:6px;color:var(--primary-color);margin-bottom:16px;text-transform:uppercase;">◈ National Level Hunter ◈</p><h1 id="heroName" class="glitch-text section-reveal stagger-2" data-text="SERU LALITHA SREE" style="font-family:'Cinzel',serif;font-size:clamp(36px,7vw,72px);font-weight:500;color:#fff;line-height:1.1;margin-bottom:16px;letter-spacing:4px;">SERU LALITHA SREE</h1><p id="heroTitle" class="section-reveal stagger-3 neon-glow" style="font-family:'Rajdhani',sans-serif;font-size:clamp(16px,2.5vw,22px);font-weight:500;letter-spacing:4px;margin-bottom:40px;color:var(--accent-color);"> Full Stack Developer . DESIGNER</p><div class="section-reveal stagger-4" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#projects" class="sl-btn">View Quests</a> <a href="#contact" class="sl-btn-outline">Summon Me</a>
+     </div><div class="section-reveal stagger-5" style="margin-top:60px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0.4;">
+       <span style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;">SCROLL</span> <i data-lucide="chevrons-down" style="width:20px;height:20px;animation:bounce 2s infinite;"></i>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <section id="about" style="padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <div style="display:flex;align-items:center;gap:12px;margin-bottom:48px;">
+      <div style="width:4px;height:32px;background:var(--primary-color);border-radius:2px;"></div>
+      <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:4px;">MY PROFILE</h2>
+     </div>
+     <div class="hunter-id" style="border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
+       <div style="width:160px;height:160px;border-radius:16px;background:linear-gradient(135deg,rgba(123,63,228,0.3),rgba(0,229,255,0.1));border:2px solid rgba(123,63,228,0.3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none">
+         <circle cx="40" cy="28" r="16" fill="rgba(123,63,228,0.4)" stroke="var(--primary-color)" stroke-width="1.5" /> <path d="M12 72c0-15.464 12.536-28 28-28s28 12.536 28 28" fill="rgba(123,63,228,0.2)" stroke="var(--primary-color)" stroke-width="1.5" /> <path d="M30 25l4 4 8-8" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:40%;background:linear-gradient(to top,var(--surface-color),transparent);"></div>
+       </div>
+       <div style="text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);margin-bottom:4px;">
+         RANK
+        </div>
+        <div style="font-family:'Cinzel',serif;font-size:36px;font-weight:900;color:#fff;text-shadow:0 0 20px var(--primary-color);">
+         S
+        </div>
+       </div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;">
+        <div style="text-align:center;padding:12px;background:rgba(123,63,228,0.05);border-radius:8px;border:1px solid rgba(123,63,228,0.1);">
+         <div style="font-family:'Orbitron',monospace;font-size:20px;font-weight:700;color:var(--accent-color);">
+          -
+         </div>
+         <div style="font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(200,200,224,0.5);margin-top:4px;">
+          Beginner
+         </div>
+        </div>
+       </div>
+      </div><div style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+       <div>
+        <div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);margin-bottom:8px;">
+         My
+        </div>
+        <div id="aboutTitle" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;">
+         INTRODUCTION
+        </div>
+       </div>
+       <div>
+        <div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);margin-bottom:8px;">
+         INTEL
+        </div>
+        <p id="aboutText" style="font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--text-color);">I arose from the weakest to become the strongest. A passionate full-stack developer who transforms complex challenges into elegant, powerful solutions. Like clearing S-rank dungeons, I tackle the most demanding projects with precision and relentless determination.</p>
+       </div>
+       <div>
+        <div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);margin-bottom:12px;">
+         INTRESET
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+         <span style="padding:6px 14px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);color:var(--accent-color);">Editing</span> <span style="padding:6px 14px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;background:rgba(123,63,228,0.15);border:1px solid rgba(123,63,228,0.3);color:var(--primary-color);">Designing</span> <span style="padding:6px 14px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);color:var(--accent-color);">Animation</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><section id="skills" style="padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <div style="display:flex;align-items:center;gap:12px;margin-bottom:48px;">
+      <div style="width:4px;height:32px;background:var(--accent-color);border-radius:2px;"></div>
+      <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:4px;">MY STATUS</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div class="sl-card" style="border-radius:12px;padding:24px;" id="statCards">
+       </div>
+     </div><div style="margin-top:48px;">
+      <h3 style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;color:var(--primary-color);margin-bottom:24px;">◈ ABILITIES</h3>
+      <div id="abilitiesGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+      </div>
+     </div>
+    </div>
+   </section><section id="projects" style="padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <div style="display:flex;align-items:center;gap:12px;margin-bottom:48px;">
+      <div style="width:4px;height:32px;background:var(--primary-color);border-radius:2px;"></div>
+      <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:4px;">COMPLETED QUESTS</h2>
+     </div>
+     <div id="projectsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+     </div>
+    </div>
+   </section><section id="contact" style="padding:80px 24px 120px;">
+    <div style="max-width:600px;margin:0 auto;">
+     <div style="display:flex;align-items:center;gap:12px;margin-bottom:48px;">
+      <div style="width:4px;height:32px;background:var(--accent-color);border-radius:2px;"></div>
+      <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:4px;">SUMMON ME</h2>
+     </div>
+     <div class="sl-card" style="border-radius:16px;padding:32px;">
+      <p style="font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--text-color);margin-bottom:24px;text-align:center;">Ready to embark on a new quest? Send a signal through the shadow realm.</p>
+      <form id="contactForm" onsubmit="handleSubmit(event)" style="display:flex;flex-direction:column;gap:16px;">
+       <div>
+        <label for="nameInput" style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);display:block;margin-bottom:8px;">HUNTER NAME</label> <input type="text" id="nameInput" required placeholder="Your name" style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid rgba(123,63,228,0.2);background:rgba(10,10,18,0.8);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-color)'" onblur="this.style.borderColor='rgba(123,63,228,0.2)'">
+       </div>
+       <div>
+        <label for="emailInput" style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);display:block;margin-bottom:8px;">SIGNAL FREQUENCY</label> <input type="email" id="emailInput" required placeholder="your@email.com" style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid rgba(123,63,228,0.2);background:rgba(10,10,18,0.8);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-color)'" onblur="this.style.borderColor='rgba(123,63,228,0.2)'">
+       </div>
+       <div>
+        <label for="messageInput" style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--primary-color);display:block;margin-bottom:8px;">QUEST DETAILS</label> <textarea id="messageInput" required rows="4" placeholder="Describe your quest..." style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid rgba(123,63,228,0.2);background:rgba(10,10,18,0.8);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;resize:vertical;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-color)'" onblur="this.style.borderColor='rgba(123,63,228,0.2)'"></textarea>
+       </div><button type="submit" class="sl-btn" style="width:100%;margin-top:8px;"> <i data-lucide="send" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:8px;"></i> SEND SIGNAL </button>
+      </form>
+      <div id="formSuccess" style="display:none;text-align:center;padding:24px;">
+       <div style="font-size:48px;margin-bottom:12px;">
+        ⚡
+       </div>
+       <p style="font-family:'Cinzel',serif;font-size:18px;color:#fff;margin-bottom:8px;">Signal Received!</p>
+       <p style="font-family:'Rajdhani',sans-serif;color:var(--text-color);font-size:14px;">Your quest has been registered. I'll arise to meet you soon.</p>
+      </div>
+     </div><div style="display:flex;justify-content:center;gap:20px;margin-top:32px;" id="socialLinks">
+      <a href="#" class="nav-link" style="display:flex;align-items:center;gap:6px;" onclick="event.preventDefault()"> <i data-lucide="github" style="width:18px;height:18px;"></i> </a> <a href="#" class="nav-link" style="display:flex;align-items:center;gap:6px;" onclick="event.preventDefault()"> <i data-lucide="linkedin" style="width:18px;height:18px;"></i> </a> <a href="#" class="nav-link" style="display:flex;align-items:center;gap:6px;" onclick="event.preventDefault()"> <i data-lucide="twitter" style="width:18px;height:18px;"></i> </a> <a href="#" class="nav-link" style="display:flex;align-items:center;gap:6px;" onclick="event.preventDefault()"> <i data-lucide="mail" style="width:18px;height:18px;"></i> </a>
+     </div>
+    </div>
+   </section><footer style="padding:24px;text-align:center;border-top:1px solid rgba(123,63,228,0.1);">
+    <p style="font-family:'Rajdhani',sans-serif;font-size:13px;color:rgba(200,200,224,0.3);letter-spacing:2px;">◈ ARISE ◈ Built with shadows and code ◈</p>
+   </footer>
+  </div>
+
+  <script>
+    // ====== SYSTEM LOGIC ======
+    function arise() {
+      const opening = document.getElementById('system-opening');
+      const container = document.getElementById('scrollContainer');
+      
+      opening.classList.add('system-off');
+      container.style.overflowY = 'auto'; // Unlock scrolling
+      
+      setTimeout(() => {
+        opening.remove();
+        // Start stat animations once entered
+        document.querySelectorAll('.stat-fill').forEach(bar => {
+          bar.style.width = bar.dataset.target + '%';
+        });
+      }, 800);
+    }
+
+    // ====== DATA ======
+    const stats = [
+      { name: 'Frontend', level: 95, icon: 'monitor' },
+      { name: 'Backend', level: 90, icon: 'server' },
+      
+      { name: 'UI/UX', level: 80, icon: 'palette' },
+      { name: 'Problem Solving', level: 90, icon: 'brain' },
+    ];
+
+    const abilities = [
+      { name: 'CSS / HTML', icon: 'zap', rank: 'S' },
+      { name: 'Javascript', icon: 'server', rank: 'S' },
+      { name: 'Python ', icon: 'terminal', rank: 'A' },
+      { name: 'TypeScript', icon: 'file-code', rank: 'S' },
+      { name: 'Java', icon: 'database', rank: 'A' },
+      
+      
+      { name: 'GraphQL', icon: 'git-branch', rank: 'S' },
+    ];
+
+    const projects = [
+      {
+        title: 'To-Do List App',
+        desc: 'The To-Do List Web Application helps users organize their daily tasks efficiently. Users can add new tasks, mark tasks as completed, and delete tasks when finished. The application provides a simple and interactive interface to manage tasks in a structured way.',
+        tags: ['HTML', 'CSS', 'JAVASCRIPT'],
+        rank: 'S',
+        status: 'Cleared'
+      },
+      {
+        title: 'Notes App',
+        desc: 'The Notes App is a simple web application that allows users to create, save, and manage personal notes. Users can add new notes, edit existing notes, and delete notes when they are no longer needed.',
+        tags: ['HTML', 'CSS', 'JAVASCRIPT'],
+        rank: 'S',
+        status: 'Cleared'
+      },
+      {
+        title: 'Diabetes Prediction using Machine Learning',
+        desc: 'Used a Random Forest Classifier to analyze health data.Successfully deployed my model to the IBM Cloud as a live tool.Achieved a high 84% confidence level in my model’s predictions.Learned how to test models using API endpoints and code snippets.Gained experience using IBM Cloud Pak for Data for AI development. Mastered the full process: from training a model to making it live. ',
+        tags: ['PYTHON', 'JAVASCRIPT', 'IBM CLOUD','IBM Cloud Pak for Data','Dynamic updates using JavaScript'],
+        rank: 'A',
+        status: 'Cleared'
+      },
+    ];
+
+    // ====== RENDER FUNCTIONS ======
+    function renderStats() {
+      const container = document.getElementById('statCards');
+      container.innerHTML = '';
+      // Replace single card with grid
+      container.style.display = 'contents';
+      container.removeAttribute('class');
+
+      stats.forEach((stat, i) => {
+        const card = document.createElement('div');
+        card.className = 'sl-card';
+        card.style.cssText = 'border-radius:12px;padding:24px;';
+        card.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <i data-lucide="${stat.icon}" style="width:20px;height:20px;color:var(--primary-color);"></i>
+              <span style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:16px;letter-spacing:1px;color:#fff;">${stat.name}</span>
+            </div>
+            <span style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--accent-color);">${stat.level}</span>
+          </div>
+          <div class="stat-bar">
+            <div class="stat-fill" style="width:0%;" data-target="${stat.level}"></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+      // Animate stat bars handled by arise()
+    }
+
+    function renderAbilities() {
+      const grid = document.getElementById('abilitiesGrid');
+      grid.innerHTML = '';
+      abilities.forEach(ab => {
+        const el = document.createElement('div');
+        el.className = 'sl-card';
+        el.style.cssText = 'border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;';
+        const rankClass = ab.rank === 'S' ? 'rank-s' : 'rank-a';
+        el.innerHTML = `
+          <div class="rank-badge ${rankClass}" style="width:32px;height:32px;font-size:11px;flex-shrink:0;">${ab.rank}</div>
+          <div>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:14px;color:#fff;">${ab.name}</div>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projectsGrid');
+      grid.innerHTML = '';
+      projects.forEach(proj => {
+        const el = document.createElement('div');
+        el.className = 'sl-card';
+        el.style.cssText = 'border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:16px;';
+        const rankClass = proj.rank === 'S' ? 'rank-s' : 'rank-a';
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="rank-badge ${rankClass}" style="width:36px;height:36px;font-size:13px;">${proj.rank}</div>
+            <span style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--accent-color);background:rgba(0,229,255,0.08);padding:4px 10px;border-radius:12px;">${proj.status}</span>
+          </div>
+          <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">${proj.title}</h3>
+            <p style="font-family:'Rajdhani',sans-serif;font-size:14px;line-height:1.6;color:var(--text-color);opacity:0.8;">${proj.desc}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;">
+            ${proj.tags.map(t => `<span style="padding:4px 12px;border-radius:16px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;background:rgba(123,63,228,0.1);border:1px solid rgba(123,63,228,0.2);color:var(--primary-color);">${t}</span>`).join('')}
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    // ====== ANIMATED BACKGROUND ======
+    function initBackground() {
+      const canvas = document.getElementById('bgCanvas');
+      const ctx = canvas.getContext('2d');
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function drawGrid(time) {
+        const baseOpacity = 0.04;
+        const pulseIntensity = Math.sin(time * 0.0008) * 0.03;
+        ctx.strokeStyle = `rgba(123,63,228,${baseOpacity + pulseIntensity})`;
+        ctx.lineWidth = 0.5;
+        const spacing = 60;
+        const offset = (time * 0.02) % spacing;
+
+        for (let x = -spacing + offset; x < w + spacing; x += spacing) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+        for (let y = -spacing + offset; y < h + spacing; y += spacing) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+      }
+
+      const orbs = Array.from({length: 6}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 140 + 80,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        color: Math.random() > 0.5 ? 'rgba(123,63,228,' : 'rgba(0,229,255,',
+        rotSpeed: Math.random() * 0.0005
+      }));
+
+      function drawOrbs(time) {
+        orbs.forEach(o => {
+          o.x += o.vx;
+          o.y += o.vy;
+          if (o.x < -o.r) o.x = w + o.r;
+          if (o.x > w + o.r) o.x = -o.r;
+          if (o.y < -o.r) o.y = h + o.r;
+          if (o.y > h + o.r) o.y = -o.r;
+
+          const pulse = Math.sin(time * 0.0012 + o.r) * 0.04 + 0.06;
+          const innerGrad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * 0.3);
+          innerGrad.addColorStop(0, o.color + (pulse * 1.5) + ')');
+          innerGrad.addColorStop(1, o.color + (pulse * 0.5) + ')');
+          ctx.fillStyle = innerGrad;
+          ctx.beginPath();
+          ctx.arc(o.x, o.y, o.r * 0.3, 0, Math.PI * 2);
+          ctx.fill();
+
+          const outerGrad = ctx.createRadialGradient(o.x, o.y, o.r * 0.3, o.x, o.y, o.r);
+          outerGrad.addColorStop(0, o.color + (pulse * 0.6) + ')');
+          outerGrad.addColorStop(1, o.color + '0)');
+          ctx.fillStyle = outerGrad;
+          ctx.beginPath();
+          ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function drawGlitch(time) {
+        if (Math.random() > 0.92) {
+          const glitchY = Math.random() * h;
+          const glitchHeight = Math.random() * 40 + 10;
+          const glitchX = Math.random() * w - 50;
+          ctx.fillStyle = `rgba(123,63,228,${Math.random() * 0.1 + 0.05})`;
+          ctx.fillRect(glitchX, glitchY, 100, glitchHeight);
+          ctx.fillStyle = `rgba(0,229,255,${Math.random() * 0.08})`;
+          ctx.fillRect(glitchX + 3, glitchY + 2, 100, glitchHeight);
+        }
+      }
+
+      function drawScanLines(time) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.02)';
+        ctx.lineWidth = 1;
+        for (let y = 0; y < h; y += 3) {
+          const offset = (time * 0.3) % 3;
+          ctx.beginPath();
+          ctx.moveTo(0, y + offset);
+          ctx.lineTo(w, y + offset);
+          ctx.stroke();
+        }
+      }
+
+      const streaks = [];
+      function createStreak() {
+        if (Math.random() > 0.94 && streaks.length < 3) {
+          streaks.push({
+            x: Math.random() * w,
+            life: 0,
+            maxLife: Math.random() * 300 + 100,
+            width: Math.random() * 2 + 1,
+            points: generateLightningPath(Math.random() * w, 0, Math.random() * w, h)
+          });
+        }
+      }
+
+      function generateLightningPath(x1, y1, x2, y2) {
+        const points = [{x: x1, y: y1}];
+        const segments = 8;
+        for (let i = 1; i <= segments; i++) {
+          const t = i / segments;
+          const x = x1 + (x2 - x1) * t + (Math.random() - 0.5) * 60;
+          const y = y1 + (y2 - y1) * t;
+          points.push({x, y});
+        }
+        points.push({x: x2, y: y2});
+        return points;
+      }
+
+      function drawStreaks(time) {
+        createStreak();
+        for (let i = streaks.length - 1; i >= 0; i--) {
+          const streak = streaks[i];
+          streak.life++;
+          if (streak.life > streak.maxLife) {
+            streaks.splice(i, 1);
+            continue;
+          }
+          const alpha = (1 - streak.life / streak.maxLife) * 0.6;
+          ctx.strokeStyle = `rgba(0,229,255,${alpha})`;
+          ctx.lineWidth = streak.width;
+          ctx.beginPath();
+          ctx.moveTo(streak.points[0].x, streak.points[0].y);
+          for (let j = 1; j < streak.points.length; j++) {
+            ctx.lineTo(streak.points[j].x, streak.points[j].y);
+          }
+          ctx.stroke();
+        }
+      }
+
+      const pulses = [];
+      function createPulse() {
+        if (Math.random() > 0.96) {
+          pulses.push({
+            x: w / 2 + (Math.random() - 0.5) * 200,
+            y: h / 2 + (Math.random() - 0.5) * 200,
+            r: 5,
+            maxR: Math.random() * 300 + 200,
+            life: 0,
+            maxLife: 800
+          });
+        }
+      }
+
+      function drawPulses(time) {
+        createPulse();
+        for (let i = pulses.length - 1; i >= 0; i--) {
+          const p = pulses[i];
+          p.life++;
+          if (p.life > p.maxLife) {
+            pulses.splice(i, 1);
+            continue;
+          }
+          const t = p.life / p.maxLife;
+          p.r = 5 + (p.maxR - 5) * t;
+          const alpha = (1 - t) * 0.15;
+          ctx.strokeStyle = `rgba(123,63,228,${alpha})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+
+      function animate(time) {
+        ctx.fillStyle = "#0a0a12";
+        ctx.fillRect(0, 0, w, h);
+        drawGrid(time);
+        drawOrbs(time);
+        drawScanLines(time);
+        drawGlitch(time);
+        drawStreaks(time);
+        drawPulses(time);
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function initParticles() {
+      const field = document.getElementById('particleField');
+      function createParticle() {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        const x = Math.random() * 100;
+        const dur = Math.random() * 6 + 4;
+        const isPurple = Math.random() > 0.3;
+        p.style.cssText = `width:${size}px;height:${size}px;left:${x}%;bottom:-10px;background:${isPurple ? 'var(--primary-color)' : 'var(--accent-color)'};box-shadow:0 0 ${size*3}px ${isPurple ? 'var(--primary-color)' : 'var(--accent-color)'};animation-duration:${dur}s;`;
+        field.appendChild(p);
+        setTimeout(() => p.remove(), dur * 1000);
+      }
+      setInterval(createParticle, 200);
+    }
+
+    function initEnergyWaves() {
+      const container = document.getElementById('energyWaves');
+      function createWave() {
+        const wave = document.createElement('div');
+        wave.className = 'energy-wave';
+        wave.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;width:100px;height:100px;border-color:rgba(123,63,228,0.1);`;
+        container.appendChild(wave);
+        setTimeout(() => wave.remove(), 4000);
+      }
+      setInterval(createWave, 3000);
+    }
+
+    function initTendrils() {
+      const container = document.getElementById('shadowTendrils');
+      for (let i = 0; i < 8; i++) {
+        const tendril = document.createElement('div');
+        tendril.className = 'shadow-tendril';
+        tendril.style.cssText = `left:${10 + i * 12}%;background:linear-gradient(to top, var(--primary-color), transparent);animation-delay:${i * 0.8}s;`;
+        container.appendChild(tendril);
+      }
+    }
+
+    function initRunes() {
+      const field = document.getElementById('runeField');
+      for (let i = 0; i < 12; i++) {
+        const rune = document.createElement('div');
+        rune.className = 'rune';
+        rune.textContent = '⬡◈⟐⬢◇▽△⬠'[Math.floor(Math.random() * 8)];
+        rune.style.cssText = `left:${Math.random()*95}%;top:${Math.random()*95}%;animation-delay:${Math.random()*8}s;`;
+        field.appendChild(rune);
+      }
+    }
+
+    function toggleMobile() { document.getElementById('mobileMenu').classList.toggle('active'); lucide.createIcons(); }
+    function handleSubmit(e) { e.preventDefault(); document.getElementById('contactForm').style.display = 'none'; document.getElementById('formSuccess').style.display = 'block'; }
+
+    // Init All
+    renderStats();
+    renderAbilities();
+    renderProjects();
+    initBackground();
+    initParticles();
+    initEnergyWaves();
+    initTendrils();
+    initRunes();
+    lucide.createIcons();
+  </script>
+ </body>
+</html>
